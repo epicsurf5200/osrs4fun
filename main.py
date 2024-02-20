@@ -1,9 +1,8 @@
 # main access point for the application
 import find_target
-import click
+import action
 
 
 def main():
     find_target.find_target()
-    click.click()
-    
+    action.click()
