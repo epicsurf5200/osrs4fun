@@ -1,6 +1,6 @@
-if [ ! -d "OSRS4FUN" ]; then
+if [ ! -d "env" ]; then
     echo "Creating virtual environment..."
-    if python3 -m venv OSRS4FUN; then
+    if python3 -m venv env; then
         echo "Virtual environment created."
     else
         echo "Failed to create virtual environment."
@@ -9,7 +9,7 @@ if [ ! -d "OSRS4FUN" ]; then
 fi
 
 echo "Activating virtual environment..."
-if ! source OSRS4FUN/bin/activate; then
+if ! source env/bin/activate; then
     echo "Failed to activate virtual environment."
     return 1
 fi
