@@ -1,11 +1,13 @@
 # main access point for the application
-import display
+from display import Display
 import action
 import argparse
 import inventory
+import cv2
+import time
 
 def arg_parser() -> argparse.Namespace:
-    """_summary_
+    """Parse the command line arguments
 
     Returns:
         parsed_args ['list']: Arguments parsed from the command line
@@ -22,19 +24,25 @@ def __init__(self, model, display):
     self.model = model
     self.display = display
 
-def main(mode: str, target: str = None):
-    display.Display.capture()
-    breakpoint()
-    if mode == "attack":
-        target_coord = find_target.FindTarget(target)
-        action.attack()
+def main(args):
+    timeout = time.time() + 30
+    while time.time() < timeout:
+        img, window_position = Display.capture()
+        if args.debug:
+            cv2.imshow('RuneLite Capture', img)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                    cv2.destroyAllWindows()
+                    return
 
-    if mode == "chop_trees":
-        while inventory.is_full() == False:
-            target_coord = find_target.FindTarget(target)
-            action.chop_trees()
+        if args.mode == "attack":
+            target_coord = Display.FindTarget(args.target)
+            action.attack()
 
+        if args.mode == "chop_trees":
+            while inventory.is_full() == False:
+                target_coord = Display.FindTarget(args.target)
+                action.chop_trees()
 
 if __name__ == "__main__":
     args = arg_parser()
-    main(args.mode, args.target)
+    main(args)
