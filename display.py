@@ -5,7 +5,7 @@ import numpy as np
 import pyautogui
 import time
 import mss
-im
+
 #using my custom model, find the target in the image
 
 class DisplayException(Exception):
@@ -13,14 +13,14 @@ class DisplayException(Exception):
 
 class Display:
 
-    def __init__(self, model):
-        self.model = model
+    #def __init__(model):
+    #    self.model = model
 
-    def capture(self, debug=False):
+    def capture(debug=False):
         """
         Capture the window
         """
-
+    
         with mss.mss() as sct:
             monitor = sct.monitors[1]  # Index 1 is usually the primary monitor
             screenshot = sct.grab(monitor)
@@ -37,7 +37,7 @@ class Display:
             cv2.destroyAllWindows()
         return img
 
-    def find_target(self):
+    def find_target():
         """
         Find the target in the image
         """

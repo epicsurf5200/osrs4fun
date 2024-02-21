@@ -1,4 +1,5 @@
 # main access point for the application
+import display
 import action
 import argparse
 import inventory
@@ -36,4 +37,4 @@ def main(mode: str, target: str = None):
 
 if __name__ == "__main__":
     args = arg_parser()
-    main()
+    main(args.mode, args.target)

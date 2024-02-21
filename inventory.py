@@ -21,7 +21,7 @@ class inventory:
         inventory.open_inventory()
 
         # get the number of items in the inventory from the display
-        items_in_inventory = 
+        items_in_inventory = 0
 
         if items_in_inventory == 28:
             return True
@@ -63,7 +63,7 @@ class inventory:
         inventory.open_inventory()
 
         # get the number of items in the inventory from the display
-        items_in_inventory = 
+        items_in_inventory = 0
 
         while items_in_inventory > 0:
             # drop the item

@@ -1,11 +1,11 @@
 # Do actions on the screen
 
-import cv2
 import numpy as np
 import pyautogui
 import time
 
 class ActionException(Exception):
+    pass
 class Action:
 
     # click on the screen with the given coordinates
@@ -21,7 +21,7 @@ class Action:
         time.sleep(0.5)
 
         # get the number of items in the inventory from the display
-        items_in_inventory = 
+        items_in_inventory = 0
         
         while items_in_inventory > 0:
             # drop the item
