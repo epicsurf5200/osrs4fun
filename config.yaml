@@ -1,1 +1,6 @@
-timeout: 2
+inventory: 
+  - name: space 1
+    location: 1
+    coordinates: [0, 0]
+  - name: space 2
+  

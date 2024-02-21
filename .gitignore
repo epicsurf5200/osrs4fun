@@ -127,6 +127,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+OSRS_bot_env
 
 # Spyder project settings
 .spyderproject
