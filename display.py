@@ -5,6 +5,10 @@ import numpy as np
 import pyautogui
 import time
 import mss
+import pygetwindow as gw
+import Quartz
+from Quartz.CoreGraphics import CGWindowListCopyWindowInfo, kCGNullWindowID, kCGWindowListOptionOnScreenOnly, kCGWindowImageDefault
+from AppKit import NSWorkspace, NSScreen
 
 #using my custom model, find the target in the image
 
@@ -20,22 +24,32 @@ class Display:
         """
         Capture the window
         """
-    
-        with mss.mss() as sct:
-            monitor = sct.monitors[1]  # Index 1 is usually the primary monitor
-            screenshot = sct.grab(monitor)
-            img = np.array(screenshot)  # Convert the screenshot to a numpy array
 
-            # Convert the image from BGR (Blue, Green, Red) to RGB
-            img = cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
+        # Get the list of all windows
+        windowList = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID)
+        # Find the RuneLite window
+        for window in windowList:
+            if 'RuneLite - Slotstick' in window.get('kCGWindowName', ''):
+                windowID = window['kCGWindowNumber']
+                image = Quartz.CGWindowListCreateImage(Quartz.CGRectNull, Quartz.kCGWindowListOptionIncludingWindow, windowID, kCGWindowImageDefault)
 
-            # Display the image in a window named 'Screen Capture'
-            cv2.imshow('Screen Capture', img)
+                width = Quartz.CGImageGetWidth(image)
+                height = Quartz.CGImageGetHeight(image)
+                provider = Quartz.CGImageGetDataProvider(image)
+                data = Quartz.CGDataProviderCopyData(provider)
+                length = Quartz.CFDataGetLength(data)
+                buf = bytearray(length)
+                Quartz.CFDataGetBytes(data, (0, length), buf)
+                bytes_per_row = Quartz.CGImageGetBytesPerRow(image)
+                img = np.frombuffer(buf, dtype=np.uint8).reshape((height, bytes_per_row // 4, 4))
 
-            # Wait for a key press to close the window
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()
-        return img
+                img = cv2.cvtColor(img, cv2.COLOR_RGBA2RGB)
+
+                break
+        cv2.imshow('RuneLite Capture', img)
+        cv2.waitKey(0)
+        breakpoint()
+        cv2.destroyAllWindows()
 
     def find_target():
         """
