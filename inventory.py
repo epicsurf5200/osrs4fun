@@ -1,5 +1,6 @@
 import pyautogui
 import time
+import cv2 as cv
 
 class Inventory:
     def __init__(self, model, display):
@@ -35,12 +36,12 @@ class Inventory:
             print("Inventory is already open")
         time.sleep(0.5)
 
-    def is_full():
+    def is_full(self):
         """
         Check if the inventory is full
         """
         # open inventory, press f1 key
-        inventory.open_inventory()
+        self.open_inventory()
 
         # get the number of items in the inventory from the display
         items_in_inventory = 0
@@ -49,8 +50,28 @@ class Inventory:
             return True
         else:
             return False
-    
-    def determine_inventory():
+    def draw_inventory(self, img, inventory_slots):
+        """
+        Draw the inventory on the screen
+        """
+        # open inventory
+        self.open_inventory()
+
+        for inventory_slot in inventory_slots:
+            cv.rectangle(img, inventory_slot["coordinates"], inventory_slot["coordinates"]+10, color, thickness)
+
+            cv.draw_rectangle(img, inventory_slot, (0, 255, 0))
+            pyautogui.moveTo(x, y)
+            pyautogui.dragTo(x, y, duration=0.5)
+            time.sleep(0.5)
+
+        # draw the inventory
+        for x in range(4):
+            for y in range(7):
+                pyautogui.moveTo(x, y)
+                pyautogui.dragTo(x, y, duration=0.5)
+                time.sleep(0.5)
+    def determine_inventory(self):
         """Determine the items in the inventory"""
         # open inventory
         inventory.open_inventory()

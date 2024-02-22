@@ -1,6 +1,8 @@
-inventory: 
+inventory_slots: 
   - name: space 1
     location: 1
-    coordinates: [0, 0]
+    coordinates: [0, 0] #top left
+    width: 10
+    height: 10
   - name: space 2
   

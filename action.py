@@ -7,7 +7,8 @@ import time
 class ActionException(Exception):
     pass
 class Action:
-
+    def __init__(self, model):
+        self.model = model
     # click on the screen with the given coordinates
     def _click(x, y):
         pyautogui.click(x, y)

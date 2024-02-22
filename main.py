@@ -4,9 +4,13 @@ import time
 from display import Display
 import action
 from inventory import Inventory
+import yaml
 
 class Main:
     def __init__(self):
+        with open("config.yaml", "r") as file:
+            config = yaml.load(file, Loader=yaml.FullLoader)
+            self.inventory_slots = config["inventory_slots"]
         # self.model = model
         # self.display = display
         self.img = None
@@ -28,16 +32,17 @@ class Main:
     def run(self, args):
         """Run the bot"""
 
-        timeout = time.time() + 30
+        timeout = time.time() + 60
         self.img, self.window = Display.capture()
-        Display.raise_window(self.window["kCGWindowOwnerName"])
-        Inventory.open_inventory()
-        time.sleep(1)
-        Inventory.close_inventory()
-        breakpoint()
+
         while time.time() < timeout:
-            self.img, self.window = Display.capture()
+            #self.img, self.window = Display.capture()
+            #Inventory.open_inventory()
+            #time.sleep(5)
+            #Inventory.close_inventory()
+
             if args.debug:
+                Inventory.draw_inventory(self.img, self.inventory_slots)
                 cv2.imshow('RuneLite Capture', self.img)
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     cv2.destroyAllWindows()
