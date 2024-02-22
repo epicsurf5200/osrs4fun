@@ -1,17 +1,39 @@
 import pyautogui
 import time
 
-class inventory:
+class Inventory:
     def __init__(self, model, display):
         self.model = model
+
+    def close_inventory():
+        """
+        Open the inventory
+        """
+        print("Closing inventory...")
+        try:
+            pyautogui.locateOnScreen("images/inventory.png")
+        except:
+            print("Inventory is already closed")
+        else:
+            print("Inventory is open")
+            pyautogui.press("f1")
+            print("Inventory closed")
+        time.sleep(0.5)
 
     def open_inventory():
         """
         Open the inventory
         """
-        if pyautogui.locateOnScreen("inventory.png") is not None:
+        print("Opening inventory...")
+        try:
+            pyautogui.locateOnScreen("images/inventory.png")
+        except:
+            print("Inventory is closed")
             pyautogui.press("f1")
-            time.sleep(0.5)
+            print("Inventory opened")
+        else:
+            print("Inventory is already open")
+        time.sleep(0.5)
 
     def is_full():
         """

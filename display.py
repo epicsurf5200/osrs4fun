@@ -7,6 +7,8 @@ import pygetwindow as gw
 import Quartz
 from Quartz.CoreGraphics import CGWindowListCopyWindowInfo, kCGNullWindowID, kCGWindowListOptionOnScreenOnly, kCGWindowImageDefault
 from AppKit import NSWorkspace, NSScreen
+import subprocess
+import time
 
 #using my custom model, find the target in the image
 
@@ -17,6 +19,17 @@ class Display:
 
     #def __init__(model):
     #    self.model = model
+    def raise_window(window_title):
+        """
+        Raise the window to the top using AppleScript
+        """
+        script = f'''
+        tell application "System Events"
+            set frontmost of the first process whose name is "{window_title}" to true
+        end tell
+        '''
+        subprocess.run(["osascript", "-e", script])
+        time.sleep(1)
 
     def capture(debug=False):
         """
@@ -47,11 +60,10 @@ class Display:
                 img = img[border_offset_y:-border_offset_y, border_offset_x:-border_offset_x, :]
 
                 img = cv2.cvtColor(img, cv2.COLOR_RGBA2RGB)
-
                 # get the window position
                 window_position = window['kCGWindowBounds']
                 break
-        return img, window_position
+        return img, window
 
     def find_target():
         """

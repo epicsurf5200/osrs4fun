@@ -1,48 +1,59 @@
-# main access point for the application
-from display import Display
-import action
 import argparse
-import inventory
 import cv2
 import time
+from display import Display
+import action
+from inventory import Inventory
 
-def arg_parser() -> argparse.Namespace:
-    """Parse the command line arguments
+class Main:
+    def __init__(self):
+        # self.model = model
+        # self.display = display
+        self.img = None
+        self.window_position = None
 
-    Returns:
-        parsed_args ['list']: Arguments parsed from the command line
-    """
-    parser = argparse.ArgumentParser(prog= "python main.py", description="Just for fun OSRS bot")
-    parser.add_argument("-m", "--mode", help="Mode of the bot", required=True)
-    parser.add_argument("-t", "--target", help="Target to interact/attack")
-    parser.add_argument("-d", "--debug", help="Set to debug mode", action="store_true")
-    parsed_args = parser.parse_args()
-    return parsed_args
+    @staticmethod
+    def arg_parser() -> argparse.Namespace:
+        """Parse the command line arguments
 
+        Returns:
+            argparse.Namespace: Arguments parsed from the command line
+        """
+        parser = argparse.ArgumentParser(prog="python main.py", description="Just for fun OSRS bot")
+        parser.add_argument("-m", "--mode", help="Mode of the bot", required=True)
+        parser.add_argument("-t", "--target", help="Target to interact/attack")
+        parser.add_argument("-d", "--debug", help="Set to debug mode", action="store_true")
+        return parser.parse_args()
 
-def __init__(self, model, display):
-    self.model = model
-    self.display = display
+    def run(self, args):
+        """Run the bot"""
 
-def main(args):
-    timeout = time.time() + 30
-    while time.time() < timeout:
-        img, window_position = Display.capture()
-        if args.debug:
-            cv2.imshow('RuneLite Capture', img)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
+        timeout = time.time() + 30
+        self.img, self.window = Display.capture()
+        Display.raise_window(self.window["kCGWindowOwnerName"])
+        Inventory.open_inventory()
+        time.sleep(1)
+        Inventory.close_inventory()
+        breakpoint()
+        while time.time() < timeout:
+            self.img, self.window = Display.capture()
+            if args.debug:
+                cv2.imshow('RuneLite Capture', self.img)
+                if cv2.waitKey(1) & 0xFF == ord('q'):
                     cv2.destroyAllWindows()
                     return
 
-        if args.mode == "attack":
-            target_coord = Display.FindTarget(args.target)
-            action.attack()
-
-        if args.mode == "chop_trees":
-            while inventory.is_full() == False:
+            if args.mode == "attack":
                 target_coord = Display.FindTarget(args.target)
-                action.chop_trees()
+                action.attack()
 
+            if args.mode == "chop_trees":
+                while not Inventory.is_full():
+                    target_coord = Display.FindTarget(args.target)
+                    action.chop_trees()
+
+# Main access point for the application
 if __name__ == "__main__":
-    args = arg_parser()
-    main(args)
+    args = Main.arg_parser()  # Call the static method to parse arguments
+    app = Main()  # Create an instance of Main
+    app.run(args)  # Call the run method with the parsed arguments

@@ -15,7 +15,7 @@ if ! source OSRS_bot_env/bin/activate; then
 fi
 
 echo "Installing pip wheels..."
-if ! pip3 install --no-index --no-deps --force-reinstall packages/wheelhouse/*.whl; then
+if ! pip3 install --no-index --no-deps packages/wheelhouse/*.whl; then
     echo "Failed to install pip wheels."
     return 1
 fi
