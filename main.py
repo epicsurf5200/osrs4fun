@@ -8,9 +8,20 @@ import yaml
 
 class Main:
     def __init__(self):
+        # read the config file
         with open("config.yaml", "r") as file:
             config = yaml.load(file, Loader=yaml.FullLoader)
-            self.inventory_slots = config["inventory_slots"]
+            self.inventory = config["inventory"]
+        # setup the coordinates for the inventory
+        for inventory in self.inventory:
+            self.inventory[inventory]["coord_2"] = (
+                [self.inventory[inventory]["coord_1"][0]+ self.inventory[inventory]["width"], 
+                 self.inventory[inventory]["coord_1"][1]+ self.inventory[inventory]["height"]]
+            )
+        self.color = (0, 255, 0)
+        self.thickness = 2
+        self.debug = False
+        self.debug_img = None
         # self.model = model
         # self.display = display
         self.img = None
@@ -34,6 +45,15 @@ class Main:
 
         timeout = time.time() + 60
         self.img, self.window = Display.capture()
+        self.debug = args.debug
+
+        if args.debug:
+            self.debug_img = Inventory.draw_inventory(self)
+            Inventory.determine_inventory(self)
+            #cv2.imshow('RuneLite Capture', self.img)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                cv2.destroyAllWindows()
+                return
 
         while time.time() < timeout:
             #self.img, self.window = Display.capture()
@@ -41,12 +61,6 @@ class Main:
             #time.sleep(5)
             #Inventory.close_inventory()
 
-            if args.debug:
-                Inventory.draw_inventory(self.img, self.inventory_slots)
-                cv2.imshow('RuneLite Capture', self.img)
-                if cv2.waitKey(1) & 0xFF == ord('q'):
-                    cv2.destroyAllWindows()
-                    return
 
             if args.mode == "attack":
                 target_coord = Display.FindTarget(args.target)

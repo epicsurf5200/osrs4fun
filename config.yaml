@@ -1,8 +1,179 @@
-inventory_slots: 
-  - name: space 1
+inventory:
+  # Define all 28 spaces in the inventory
+  space 1:
     location: 1
-    coordinates: [0, 0] #top left
-    width: 10
-    height: 10
-  - name: space 2
+    coord_1: [2452, 1155] #top left [x,y]
+    width: 70
+    height: 70
+    item: None
+  space 2:
+    location: 2
+    coord_1: [2537, 1155] #top left [x,y]
+    width: 70
+    height: 70
+    item: None
+  space 3:
+    location: 3
+    coord_1: [2622, 1155] #top left [x,y]
+    width: 70
+    height: 70
+    item: None
+  space 4:
+    location: 4
+    coord_1: [2707, 1155] #top left [x,y]
+    width: 70
+    height: 70
+    item: None
+
+  space 5:
+    location: 5
+    coord_1: [2452, 1227] #top left [x,y]
+    width: 70
+    height: 70
+    item: None
+  space 6:
+    location: 6
+    coord_1: [2537, 1227]
+    width: 70
+    height: 70
+    item: None
+  space 7:
+    location: 7
+    coord_1: [2622, 1227]
+    width: 70
+    height: 70
+    item: None
+  space 8:
+    location: 8
+    coord_1: [2707, 1227]
+    width: 70
+    height: 70
+    item: None
+
+  space 9:
+    location: 9
+    coord_1: [2452, 1297]
+    width: 70
+    height: 70
+    item: None
+  space 10:
+    location: 10
+    coord_1: [2537, 1297]
+    width: 70
+    height: 70
+    item: None
+  space 11:
+    location: 11
+    coord_1: [2622, 1297]
+    width: 70
+    height: 70
+    item: None
+  space 12:
+    location: 12
+    coord_1: [2707, 1297]
+    width: 70
+    height: 70
+    item: None
+
+  space 13:
+    location: 13
+    coord_1: [2452, 1369]
+    width: 70
+    height: 70
+    item: None
+  space 14: 
+    location: 14
+    coord_1: [2537, 1369]
+    width: 70
+    height: 70
+    item: None
+  space 15: 
+    location: 15
+    coord_1: [2622, 1369]
+    width: 70
+    height: 70
+    item: None
+  space 16: 
+    location: 16
+    coord_1: [2707, 1369]
+    width: 70
+    height: 70
+    item: None
+    
+  space 17:
+    location: 17
+    coord_1: [2452, 1441]
+    width: 70
+    height: 70
+    item: None
+  space 18:
+    location: 18
+    coord_1: [2537, 1441]
+    width: 70
+    height: 70
+    item: None
+  space 19:
+    location: 19
+    coord_1: [2622, 1441]
+    width: 70
+    height: 70
+    item: None
+  space 20:
+    location: 20
+    coord_1: [2707, 1441]
+    width: 70
+    height: 70
+    item: None
+
+  space 21:
+    location: 21
+    coord_1: [2452, 1513]
+    width: 70
+    height: 70
+    item: None
+  space 22:
+    location: 22
+    coord_1: [2537, 1513]
+    width: 70
+    height: 70
+    item: None
+  space 23:
+    location: 23
+    coord_1: [2622, 1513]
+    width: 70
+    height: 70
+    item: None
+  space 24:
+    location: 24
+    coord_1: [2707, 1513]
+    width: 70
+    height: 70
+    item: None
+
+  space 25:
+    location: 25
+    coord_1: [2452, 1585]
+    width: 70
+    height: 70
+    item: None
+  space 26:
+    location: 26
+    coord_1: [2537, 1585]
+    width: 70
+    height: 70
+    item: None
+  space 27:
+    location: 27
+    coord_1: [2622, 1585]
+    width: 70
+    height: 70
+    item: None
+  space 28: 
+    location: 28
+    coord_1: [2707, 1585]
+    width: 70
+    height: 70
+    item: None
+
+  
   

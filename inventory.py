@@ -1,6 +1,7 @@
 import pyautogui
 import time
 import cv2 as cv
+import numpy as np
 
 class Inventory:
     def __init__(self, model, display):
@@ -41,7 +42,7 @@ class Inventory:
         Check if the inventory is full
         """
         # open inventory, press f1 key
-        self.open_inventory()
+        Inventory.open_inventory()
 
         # get the number of items in the inventory from the display
         items_in_inventory = 0
@@ -50,49 +51,49 @@ class Inventory:
             return True
         else:
             return False
-    def draw_inventory(self, img, inventory_slots):
+    def draw_inventory(self):
         """
         Draw the inventory on the screen
         """
         # open inventory
-        self.open_inventory()
+        Inventory.open_inventory()
+        for inventory in self.inventory:
+            cv.rectangle(self.debug_img, self.inventory[inventory]["coord_1"], self.inventory[inventory]["coord_2"], self.color, self.thickness)
+        return self.img
 
-        for inventory_slot in inventory_slots:
-            cv.rectangle(img, inventory_slot["coordinates"], inventory_slot["coordinates"]+10, color, thickness)
-
-            cv.draw_rectangle(img, inventory_slot, (0, 255, 0))
-            pyautogui.moveTo(x, y)
-            pyautogui.dragTo(x, y, duration=0.5)
-            time.sleep(0.5)
-
-        # draw the inventory
-        for x in range(4):
-            for y in range(7):
-                pyautogui.moveTo(x, y)
-                pyautogui.dragTo(x, y, duration=0.5)
-                time.sleep(0.5)
     def determine_inventory(self):
         """Determine the items in the inventory"""
+        threshold = 0.5
         # open inventory
-        inventory.open_inventory()
-        print("detecting items in the inventory")
-        items_in_inventory = {}
-        for x in range(4):
-            for y in range(7):
-                items_in_inventory[item]
-            # get the item
-            item = pyautogui.locateOnScreen("item.png")
-            if item is not None:
-                items_in_inventory[f"item_{i}"] = item
+        Inventory.open_inventory()
+        template = cv.imread('images/empty_inventory.png')
 
-        return items_in_inventory
-    
+        print("Detecting items in the inventory")
+        # iterate through the inventory slots and determine if there is an item, or if it is empty
+        for slot in self.inventory:
+            #crop the image to the inventory slot
+            x1, y1 = self.inventory[slot]["coord_1"]
+            x2, y2 = self.inventory[slot]["coord_2"]
+            cropped_img = self.img[y1:y2, x1:x2]
+
+            if self.debug:
+                cv.imshow('Inventory Slot', cropped_img)
+                cv.waitKey(0)
+
+            result = cv.matchTemplate(cropped_img, template, cv.TM_CCOEFF_NORMED)
+            if np.any(result >= threshold):
+                self.inventory[slot]["item"] = False
+                print(f"Slot {slot} is empty")
+            else:
+                self.inventory[slot]["item"] = True
+                print(f"Slot {slot} contains an item")
+
     def drop_item(item):
         """
         Drop the item from the inventory
         """
         # open inventory
-        inventory.open_inventory()
+        Inventory.open_inventory()
 
         # drop the item
         pyautogui.rightClick(x, y)
@@ -103,7 +104,7 @@ class Inventory:
         Dump the inventory to the ground
         """ 
         # open inventory, press f1 key
-        inventory.open_inventory()
+        Inventory.open_inventory()
 
         # get the number of items in the inventory from the display
         items_in_inventory = 0
