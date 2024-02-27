@@ -17,8 +17,6 @@ class DisplayException(Exception):
 
 class Display:
 
-    #def __init__(model):
-    #    self.model = model
     def raise_window(window_title):
         """
         Raise the window to the top using AppleScript

@@ -12,12 +12,19 @@ class Main:
         with open("config.yaml", "r") as file:
             config = yaml.load(file, Loader=yaml.FullLoader)
             self.inventory = config["inventory"]
+
         # setup the coordinates for the inventory
         for inventory in self.inventory:
             self.inventory[inventory]["coord_2"] = (
                 [self.inventory[inventory]["coord_1"][0]+ self.inventory[inventory]["width"], 
                  self.inventory[inventory]["coord_1"][1]+ self.inventory[inventory]["height"]]
             )
+            self.inventory[inventory]["center"] = (
+                [self.inventory[inventory]["coord_1"][0] + self.inventory[inventory]["width"] / 2,
+                    self.inventory[inventory]["coord_1"][1] + self.inventory[inventory]["height"] / 2]
+            )
+        
+        # setup the debug mode
         self.color = (0, 255, 0)
         self.thickness = 2
         self.debug = {
@@ -46,6 +53,11 @@ class Main:
         parser.add_argument("-t", "--target", help="Target to interact/attack")
         parser.add_argument("-d", "--debug", help="Set to debug mode") # add debug mode multiple allowed
         return parser.parse_args()
+
+    def mode_attack(self, target):
+        """Attack the target"""
+        target_coord = Display.FindTarget(target)
+        action.attack(target_coord)
 
     def run(self, args):
         """Run the bot"""
