@@ -2,6 +2,7 @@ import pyautogui
 import time
 import cv2 as cv
 import numpy as np
+from display import Display
 
 class Inventory:
     def __init__(self, model, display):
@@ -26,6 +27,8 @@ class Inventory:
         """
         Open the inventory
         """
+        # raise the window to the top
+        Display.raise_window("RuneLite")
         print("Opening inventory...")
         try:
             pyautogui.locateOnScreen("images/inventory.png")
@@ -76,8 +79,9 @@ class Inventory:
             x2, y2 = self.inventory[slot]["coord_2"]
             cropped_img = self.img[y1:y2, x1:x2]
 
-            if self.debug:
+            if self.debug["INVENTORY"]:
                 cv.imshow('Inventory Slot', cropped_img)
+                cv.imshow('Template', template)
                 cv.waitKey(0)
 
             result = cv.matchTemplate(cropped_img, template, cv.TM_CCOEFF_NORMED)

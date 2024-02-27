@@ -20,7 +20,14 @@ class Main:
             )
         self.color = (0, 255, 0)
         self.thickness = 2
-        self.debug = False
+        self.debug = {
+            "SHOW": False,
+            "SAVE": False,
+            "INVENTORY": False,
+            "TARGET": False,
+            "LOG": False,
+        }
+        self.debug[args.debug] = True
         self.debug_img = None
         # self.model = model
         # self.display = display
@@ -37,7 +44,7 @@ class Main:
         parser = argparse.ArgumentParser(prog="python main.py", description="Just for fun OSRS bot")
         parser.add_argument("-m", "--mode", help="Mode of the bot", required=True)
         parser.add_argument("-t", "--target", help="Target to interact/attack")
-        parser.add_argument("-d", "--debug", help="Set to debug mode", action="store_true")
+        parser.add_argument("-d", "--debug", help="Set to debug mode") # add debug mode multiple allowed
         return parser.parse_args()
 
     def run(self, args):
@@ -45,17 +52,17 @@ class Main:
 
         timeout = time.time() + 60
         self.img, self.window = Display.capture()
-        self.debug = args.debug
-
-        if args.debug:
+        if self.debug:
             self.debug_img = Inventory.draw_inventory(self)
-            Inventory.determine_inventory(self)
-            #cv2.imshow('RuneLite Capture', self.img)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                cv2.destroyAllWindows()
-                return
+            if self.debug["SHOW"]:
+                cv2.imshow('RuneLite Capture', self.img)
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    cv2.destroyAllWindows()
+                    return
 
         while time.time() < timeout:
+            Inventory.open_inventory()
+            Inventory.determine_inventory(self)
             #self.img, self.window = Display.capture()
             #Inventory.open_inventory()
             #time.sleep(5)
